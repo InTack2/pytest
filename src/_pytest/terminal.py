@@ -254,7 +254,7 @@ class TerminalReporter(object):
         self.hasmarkup = self._tw.hasmarkup
         try:
             self.isatty = file.isatty()
-        except:
+        except AttributeError:
             self.isatty = False
         self._progress_nodeids_reported = set()
         self._show_progress_info = self._determine_show_progress_info()
