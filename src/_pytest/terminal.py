@@ -330,7 +330,10 @@ class TerminalReporter:
         self.currentfspath = None  # type: Union[None, Path, str, int]
         self.reportchars = getreportopt(config)
         self.hasmarkup = self._tw.hasmarkup
-        self.isatty = file.isatty()
+        try:
+            self.isatty = file.isatty()
+        except:
+            self.isatty = False
         self._progress_nodeids_reported = set()  # type: Set[str]
         self._show_progress_info = self._determine_show_progress_info()
         self._collect_report_last_write = None  # type: Optional[float]
@@ -771,7 +774,7 @@ class TerminalReporter:
                 if stack == needed_collectors[: len(stack)]:
                     break
                 stack.pop()
-            for col in needed_collectors[len(stack) :]:
+            for col in needed_collectors[len(stack):]:
                 stack.append(col)
                 if col.name == "()":  # Skip Instances.
                     continue
@@ -902,7 +905,7 @@ class TerminalReporter:
 
             final = self._already_displayed_warnings is not None
             if final:
-                warning_reports = all_warnings[self._already_displayed_warnings :]
+                warning_reports = all_warnings[self._already_displayed_warnings:]
             else:
                 warning_reports = all_warnings
             self._already_displayed_warnings = len(warning_reports)
